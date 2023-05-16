@@ -6,9 +6,12 @@ const createStatusBtn = () => {
   return statusBtn;
 };
 
-const createDeleteBtn = () => {
+const createDeleteBtn = (id) => {
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = '削除';
+  deleteBtn.addEventListener('click', () => {
+    deleteTask(id);
+  });
   return deleteBtn;
 };
 
@@ -22,16 +25,12 @@ const createTodoList = (id, name) => {
   const deleteCell = newRow.insertCell();
 
   const statusBtn = createStatusBtn();
-  const deleteBtn = createDeleteBtn();
+  const deleteBtn = createDeleteBtn(id);
 
   idCell.textContent = id;
   taskNameCell.textContent = name;
   statusCell.appendChild(statusBtn);
   deleteCell.appendChild(deleteBtn);
-
-  deleteBtn.addEventListener('click', () => {
-    deleteTask(id);
-  });
 };
 
 const addTask = () => {
