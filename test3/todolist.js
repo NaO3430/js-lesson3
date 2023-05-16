@@ -1,8 +1,17 @@
 const tasks = [];
 
-const createStatusBtn = () => {
+const createStatusBtn = (task) => {
   const statusBtn = document.createElement('button');
-  statusBtn.textContent = '作業中';
+  statusBtn.textContent = task.status;
+  statusBtn.addEventListener('click', () => {
+    if (task.status === '作業中') {
+      task.status = '完了';
+      statusBtn.textContent = '完了';
+    } else if (task.status === '完了') {
+      task.status = '作業中';
+      statusBtn.textContent = '作業中';
+    }
+  });
   return statusBtn;
 };
 
@@ -15,7 +24,7 @@ const createDeleteBtn = (id) => {
   return deleteBtn;
 };
 
-const createTodoList = (id, name) => {
+const createTodoList = (id, name, status) => {
   const taskTable = document.getElementById('todo-list');
   const newRow = taskTable.insertRow();
 
@@ -24,7 +33,8 @@ const createTodoList = (id, name) => {
   const statusCell = newRow.insertCell();
   const deleteCell = newRow.insertCell();
 
-  const statusBtn = createStatusBtn();
+  const task = { id: id, name: name, status: status };
+  const statusBtn = createStatusBtn(task);
   const deleteBtn = createDeleteBtn(id);
 
   idCell.textContent = id;
@@ -39,9 +49,10 @@ const addTask = () => {
   input.value = '';
 
   const id = tasks.length;
+  const status = '作業中';
 
-  tasks.push({ id: id, name: name, status: '作業中' });
-  createTodoList(id, name);
+  tasks.push({ id: id, name: name, status: status });
+  createTodoList(id, name, status);
 };
 
 const deleteTask = (id) => {
@@ -50,6 +61,6 @@ const deleteTask = (id) => {
   taskTable.innerHTML = '';
   tasks.forEach((task, index) => {
     task.id = index;
-    createTodoList(task.id, task.name);
+    createTodoList(task.id, task.name, task.status);
   });
 };
