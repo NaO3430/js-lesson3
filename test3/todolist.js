@@ -1,20 +1,5 @@
 const tasks = [];
 
-const createStatusBtn = (task) => {
-  const statusBtn = document.createElement('button');
-  statusBtn.textContent = task.status;
-  statusBtn.addEventListener('click', () => {
-    if (task.status === '作業中') {
-      task.status = '完了';
-      statusBtn.textContent = '完了';
-    } else if (task.status === '完了') {
-      task.status = '作業中';
-      statusBtn.textContent = '作業中';
-    }
-  });
-  return statusBtn;
-};
-
 const createDeleteBtn = (id) => {
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = '削除';
@@ -24,7 +9,7 @@ const createDeleteBtn = (id) => {
   return deleteBtn;
 };
 
-const createTodoList = (id, name, status) => {
+const createTaskItem = (id, name, status) => {
   const taskTable = document.getElementById('todo-list');
   const newRow = taskTable.insertRow();
 
@@ -52,15 +37,67 @@ const addTask = () => {
   const status = '作業中';
 
   tasks.push({ id: id, name: name, status: status });
-  createTodoList(id, name, status);
+  createTaskItem(id, name, status);
 };
 
 const deleteTask = (id) => {
   tasks.splice(id, 1);
   const taskTable = document.getElementById('todo-list');
   taskTable.innerHTML = '';
+  showTasks();
+};
+
+const showTasks = () => {
+  const tabList = document.forms.list.tab;
+  const taskTable = document.getElementById('todo-list');
+  taskTable.innerHTML = '';
+
+  if (tabList[0].checked) {
+    tasks.forEach((task, index) => {
+      task.id = index;
+      createTaskItem(task.id, task.name, task.status);
+    });
+    return;
+  }
+
+  if (tabList[1].checked) {
+    const workingTasks = tasks.filter((task) => task.status === '作業中');
+    workingTasks.forEach((task, index) => {
+      task.id = index;
+      createTaskItem(task.id, task.name, task.status);
+    });
+    return;
+  }
+
+  if (tabList[2].checked) {
+    const doneTasks = tasks.filter((task) => task.status === '完了');
+    doneTasks.forEach((task, index) => {
+      task.id = index;
+      createTaskItem(task.id, task.name, task.status);
+    });
+    return;
+  }
+
   tasks.forEach((task, index) => {
     task.id = index;
-    createTodoList(task.id, task.name, task.status);
+    createTaskItem(task.id, task.name, task.status);
   });
 };
+
+const createStatusBtn = (task) => {
+  const statusBtn = document.createElement('button');
+  statusBtn.textContent = task.status;
+  statusBtn.addEventListener('click', () => {
+    tasks[task.id].status === '作業中'
+      ? (tasks[task.id].status = '完了')
+      : (tasks[task.id].status = '作業中');
+    showTasks();
+  });
+  return statusBtn;
+};
+
+const tabList = document.forms.list.tab;
+
+tabList[0].addEventListener('change', () => showTasks());
+tabList[1].addEventListener('change', () => showTasks());
+tabList[2].addEventListener('change', () => showTasks());
