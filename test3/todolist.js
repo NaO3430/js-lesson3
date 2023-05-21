@@ -52,6 +52,14 @@ const showTasks = () => {
   const taskTable = document.getElementById('todo-list');
   taskTable.innerHTML = '';
 
+  if (tabList[0].checked) {
+    tasks.forEach((task, index) => {
+      task.id = index;
+      createTaskItem(task.id, task.name, task.status);
+    });
+    return;
+  }
+
   if (tabList[1].checked) {
     const workingTasks = tasks.filter((task) => task.status === '作業中');
     workingTasks.forEach((task, index) => {
@@ -90,5 +98,6 @@ const createStatusBtn = (task) => {
 
 const tabList = document.forms.list.tab;
 
+tabList[0].addEventListener('change', () => showTasks());
 tabList[1].addEventListener('change', () => showTasks());
 tabList[2].addEventListener('change', () => showTasks());
