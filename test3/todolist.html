@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="todolist.js"></script>
     <style>
       ul {
         display: flex;
@@ -18,20 +17,11 @@
   </head>
   <body>
     <h1>ToDoリスト</h1>
-    <ul>
-      <li>
-        <input type="radio" name="tab" id="tab1" checked />
-        <label for="tab-all">すべて</label>
-      </li>
-      <li>
-        <input type="radio" name="tab" id="tab2" />
-        <label for="tab-working">作業中</label>
-      </li>
-      <li>
-        <input type="radio" name="tab" id="tab3" />
-        <label for="tab-done">完了</label>
-      </li>
-    </ul>
+    <form name="list">
+      <input type="radio" name="tab" value="all" checked />すべて
+      <input type="radio" name="tab" value="working" />作業中
+      <input type="radio" name="tab" value="done" />完了
+    </form>
     <table>
       <thead>
         <tr>
@@ -45,5 +35,6 @@
     <h2>新規タスクの追加</h2>
     <input type="text" id="add-task" />
     <input type="button" value="追加" onclick="addTask()" />
+    <script src="todolist.js"></script>
   </body>
 </html>
